@@ -110,7 +110,10 @@ public class MovieServiceTests {
 	
 	@Test
 	public void updateShouldThrowResourceNotFoundExceptionWhenIdDoesNotExist() {
-	}
+		Assertions.assertThrows(ResourceNotFoundException.class,()->{
+			movieService.update(nonExistingId,dto);
+		});
+		}
 	
 	@Test
 	public void deleteShouldDoNothingWhenIdExists() {
