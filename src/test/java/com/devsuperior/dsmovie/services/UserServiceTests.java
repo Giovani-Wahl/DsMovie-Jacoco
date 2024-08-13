@@ -13,6 +13,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -46,6 +47,8 @@ public class UserServiceTests {
 
 		Mockito.when(userRepository.findByUsername(existingUserNane)).thenReturn(Optional.of(user));
 		Mockito.when(userRepository.findByUsername(nonExistingUserNane)).thenReturn(Optional.empty());
+
+		Mockito.when(userRepository.searchUserAndRolesByUsername(existingUserNane)).thenReturn(userDetails);
 	}
 
 
@@ -67,6 +70,9 @@ public class UserServiceTests {
 
 	@Test
 	public void loadUserByUsernameShouldReturnUserDetailsWhenUserExists() {
+		UserDetails result = userService.loadUserByUsername(existingUserNane);
+		Assertions.assertNotNull(result);
+		Assertions.assertEquals(result.getUsername(),existingUserNane);
 	}
 
 	@Test
