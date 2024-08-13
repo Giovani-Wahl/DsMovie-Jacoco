@@ -18,6 +18,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,6 +50,7 @@ public class UserServiceTests {
 		Mockito.when(userRepository.findByUsername(nonExistingUserNane)).thenReturn(Optional.empty());
 
 		Mockito.when(userRepository.searchUserAndRolesByUsername(existingUserNane)).thenReturn(userDetails);
+		Mockito.when(userRepository.searchUserAndRolesByUsername(nonExistingUserNane)).thenReturn(new ArrayList<>());
 	}
 
 
@@ -77,5 +79,8 @@ public class UserServiceTests {
 
 	@Test
 	public void loadUserByUsernameShouldThrowUsernameNotFoundExceptionWhenUserDoesNotExists() {
+		Assertions.assertThrows(UsernameNotFoundException.class,()->{
+			userService.loadUserByUsername(nonExistingUserNane);
+		});
 	}
 }
