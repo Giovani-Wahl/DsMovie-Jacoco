@@ -133,6 +133,9 @@ public class MovieServiceTests {
 	
 	@Test
 	public void deleteShouldThrowResourceNotFoundExceptionWhenIdDoesNotExist() {
+		Assertions.assertThrows(ResourceNotFoundException.class,()->{
+			movieService.delete(nonExistingId);
+		});
 	}
 	
 	@Test
